@@ -4,16 +4,15 @@ Ghost Contacts is a React Native application that allows you to manage a secret 
 
 ## 📱 Preview
 
-### Home Screen
-![Add new contact](screenshots/1.png)
+### Add New Contact
+![Add New Contact](screenshots/1.png)
 
-### Contact Details
+### Contacts List
 ![Contacts List](screenshots/2.png)
 
 ## 🚀 Features
 
 - 📂 Secret contact list management
-- 🔒 Secure and private storage
 - 🌙 Minimalist UI/UX
 - 🔧 Built with React Native & Expo
 
