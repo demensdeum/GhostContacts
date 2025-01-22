@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hello-world",
-    "slug": "snack-8a277a29-763c-40c0-96f7-8231f35c5f8e",
+    "name": "ghost-contacts",
+    "slug": "snack-b18103af-9ab1-46d5-997d-a0d36822bb70",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,6 +24,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Example usage"
+    "description": "React Native app with secret contact list"
   }
 }
