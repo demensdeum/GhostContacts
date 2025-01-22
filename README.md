@@ -50,11 +50,6 @@ To run Ghost Contacts locally, follow these steps:
 You can try the app on Expo Snack:
 [Ghost Contacts on Snack](https://snack.expo.dev/@demensdeum/ghost-contacts)
 
-### 🛠 Online Testing
-
-You can test the app directly in your browser using Expo Snack:
-[Ghost Contacts on Snack](https://snack.expo.dev/@demensdeum/ghost-contacts)
-
 ## 📜 License
 
 MIT License © 2025 Ilia Prokhorov
