@@ -17,6 +17,31 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderRadius: 5,
   },
+confirmButton: {
+  backgroundColor: 'green',
+  padding: 10,
+  borderRadius: 5,
+  alignItems: 'center',
+  marginTop: 10,
+},
+
+confirmButtonText: {
+  color: 'white',
+  fontSize: 16,
+  fontWeight: 'bold',
+},
+  removeButton: {
+  backgroundColor: 'red',
+  padding: 10,
+  borderRadius: 5,
+  alignItems: 'center',
+  marginTop: 10,
+},
+removeButtonText: {
+  color: 'white',
+  fontSize: 16,
+  fontWeight: 'bold',
+},
   rowText: {
     fontSize: 16,
     fontWeight: 'bold',
