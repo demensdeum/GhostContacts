@@ -14,6 +14,7 @@ const ContactsScreen: React.FC = () => {
   const [contact, setContact] = useState<string>('');
   const [selectedRow, setSelectedRow] = useState<Contact | null>(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);  
 
   // Load contacts from AsyncStorage on mount
   useEffect(() => {
@@ -64,14 +65,32 @@ const ContactsScreen: React.FC = () => {
   };
 
   // Save new contact
-  const saveRow = () => {
-    if (name.trim() && contact.trim()) {
+const saveRow = () => {
+  if (name.trim() && contact.trim()) {
+    if (isEditing && selectedRow) {
+      // Update existing contact
+      setRows(rows.map(row => 
+        row.id === selectedRow.id ? { ...row, name, contact } : row
+      ));
+    } else {
+      // Add new contact
       setRows([...rows, { id: Date.now().toString(), name, contact }]);
-      setName('');
-      setContact('');
     }
-    setIsAdding(false);
-  };
+    setName('');
+    setContact('');
+    setIsEditing(false);
+    setSelectedRow(null);
+  }
+  setIsAdding(false);
+};
+
+const editRow = (row: Contact) => {
+  setSelectedRow(row);
+  setName(row.name);
+  setContact(row.contact);
+  setIsEditing(true);
+  setIsAdding(true);
+};
 
   // Cancel adding contact
   const cancelAdding = () => {
@@ -92,18 +111,17 @@ const ContactsScreen: React.FC = () => {
           data={rows}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
-          renderItem={({ item }) => (
-            <View style={styles.row}>
-              <View>
-                <Text style={styles.rowText}>{item.name}</Text>
-                <Text style={styles.rowSubText}>{item.contact}</Text>
-              </View>
-              <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
-                <Icon name="trash" size={18} color="white" />
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+renderItem={({ item }) => (
+  <TouchableOpacity onPress={() => editRow(item)} style={styles.row}>
+    <View>
+      <Text style={styles.rowText}>{item.name}</Text>
+      <Text style={styles.rowSubText}>{item.contact}</Text>
+    </View>
+    <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
+      <Icon name="trash" size={18} color="white" />
+    </TouchableOpacity>
+  </TouchableOpacity>
+)}        />
       )}
 
       <TouchableOpacity style={styles.button} onPress={() => setIsAdding(true)}>
@@ -114,7 +132,7 @@ const ContactsScreen: React.FC = () => {
       <Modal visible={isAdding} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add New Contact</Text>
+            <Text style={styles.modalTitle}>{isEditing ? 'Edit Contact' : 'Add New Contact'}</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter Name"
