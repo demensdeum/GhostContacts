@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, Alert } from 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { Contact } from '../types';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const STORAGE_KEY = '@contacts_list';
 
@@ -29,6 +30,7 @@ const ContactsScreen: React.FC = () => {
     try {
       const storedContacts = await AsyncStorage.getItem(STORAGE_KEY);
       if (storedContacts) {
+        console.log("LOG")
         setRows(JSON.parse(storedContacts));
       }
     } catch (error) {
@@ -39,6 +41,7 @@ const ContactsScreen: React.FC = () => {
   // Save contacts to AsyncStorage
   const saveContacts = async () => {
     try {
+      console.log(`saved: ${rows.length}`)
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
     } catch (error) {
       Alert.alert('Error', 'Failed to save contacts.');
@@ -85,14 +88,20 @@ const ContactsScreen: React.FC = () => {
           <Text style={styles.noContactsSubText}>Click "Add Contact" to create a new one.</Text>
         </View>
       ) : (
-        <FlatList
+<FlatList
           data={rows}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.row}>
-              <Text style={styles.rowText}>{item.name}</Text>
-              <Text style={styles.rowSubText}>{item.contact}</Text>
-            </TouchableOpacity>
+            <View style={styles.row}>
+              <View>
+                <Text style={styles.rowText}>{item.name}</Text>
+                <Text style={styles.rowSubText}>{item.contact}</Text>
+              </View>
+              <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
+                <Icon name="trash" size={18} color="white" />
+              </TouchableOpacity>
+            </View>
           )}
         />
       )}

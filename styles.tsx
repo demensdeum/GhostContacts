@@ -9,7 +9,10 @@ const styles = StyleSheet.create({
   list: {
     paddingBottom: 120,
   },
-  row: {
+    row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
