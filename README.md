@@ -2,6 +2,8 @@
 
 Ghost Contacts is a React Native application that allows you to manage a secret contact list. The app ensures privacy by keeping your contacts hidden from the default contact list.
 
+**⚠️ Disclaimer:** This app is just a toy! If someone has access to your device, this app will not protect your contacts from being discovered. Use it at your own discretion.
+
 ## 📱 Preview
 
 ### Add New Contact
@@ -45,7 +47,12 @@ To run Ghost Contacts locally, follow these steps:
 - [React Native](https://reactnative.dev/)
 - [Expo](https://expo.dev/)
 
-## 🔗 Demo
+## 🔗 Online Application
+
+You can access the online version of the app here:  
+[Ghost Contacts – Online](https://demensdeum.com/software/ghost-contacts/)
+
+## 🔗 Expo Snack
 
 You can try the app on Expo Snack:
 [Ghost Contacts on Snack](https://snack.expo.dev/@demensdeum/ghost-contacts)
