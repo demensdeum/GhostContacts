@@ -27,5 +27,9 @@
   "Delete": "Удалить",
   "Edit Contact": "Редактирование",
   "Password": "Пароль",
-  "Import Contacts CSV": "Импортировать контакты CSV"
+  "Import Contacts CSV": "Импортировать контакты CSV",
+  "Remove All Contacts": "Удалить все контакты",
+  "Confirm Deletion": "Подтверждение удаления",
+  "Are you sure you want to remove all contacts? This action cannot be undone.": "Вы действительно хотите удалить все контакты? Это действие не может быть отменено.",
+  "Delete All": "Удалить все"
 }

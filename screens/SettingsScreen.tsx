@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, Platform } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Platform, Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import * as FileSystem from 'expo-file-system';
@@ -20,6 +20,7 @@ const SettingsScreen: React.FC<{ setRefreshFlag: (value: boolean) => void }> = (
   const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);  
 
   useEffect(() => {
     const loadLanguage = async () => {
@@ -34,6 +35,20 @@ const SettingsScreen: React.FC<{ setRefreshFlag: (value: boolean) => void }> = (
     setSelectedLanguage(languageCode);
     await AsyncStorage.setItem("language", languageCode);
     await i18next.changeLanguage(languageCode);
+  };
+
+  const removeAllContacts = async () => {
+    try {
+      // Remove all contacts by setting an empty array
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+      
+      // Trigger refresh of the main screen
+      setRefreshFlag(prev => !prev);
+      
+      console.log("All contacts removed successfully");
+    } catch (error) {
+      console.log("Remove all contacts error:", error);
+    }
   };
 
 const importContactsFromCSV = async () => {
@@ -182,6 +197,37 @@ const importContactsFromCSV = async () => {
       >
         <Text style={styles.rowText}>{t("Export Contacts CSV")}</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        key="remove-all"
+        style={[styles.row]}
+        onPress={() => setShowConfirmModal(true)}
+      >
+        <Text style={[styles.rowText]}>{t("Remove All Contacts")}</Text>
+      </TouchableOpacity>
+
+      <Modal visible={showConfirmModal} transparent animationType="fade">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{t("Confirm Deletion")}</Text>
+            <Text style={styles.modalText}>
+              {t("Are you sure you want to remove all contacts? This action cannot be undone.")}
+            </Text>
+            <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.saveButton} onPress={() => setShowConfirmModal(false)}>
+              <Text style={styles.saveButtonText}>{t("Cancel")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.cancelButton]} 
+              onPress={removeAllContacts}
+            >
+              <Text style={styles.cancelButtonText}>{t("Delete All")}</Text>
+            </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      
     </View>
   );
 };
