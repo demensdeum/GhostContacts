@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, Alert, CheckBox } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { Contact } from '../types';
@@ -12,26 +12,23 @@ const ContactsScreen: React.FC = () => {
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [contact, setContact] = useState<string>('');
+  const [keepAfterWipe, setKeepAfterWipe] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Contact | null>(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState<boolean>(false);  
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  // Load contacts from AsyncStorage on mount
   useEffect(() => {
     loadContacts();
   }, []);
 
-  // Save contacts to AsyncStorage whenever rows change
   useEffect(() => {
     saveContacts();
   }, [rows]);
 
-  // Load contacts from AsyncStorage
   const loadContacts = async () => {
     try {
       const storedContacts = await AsyncStorage.getItem(STORAGE_KEY);
       if (storedContacts) {
-        console.log("LOG")
         setRows(JSON.parse(storedContacts));
       }
     } catch (error) {
@@ -39,23 +36,19 @@ const ContactsScreen: React.FC = () => {
     }
   };
 
-  // Save contacts to AsyncStorage
   const saveContacts = async () => {
     try {
-      console.log(`saved: ${rows.length}`)
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
     } catch (error) {
       Alert.alert('Error', 'Failed to save contacts.');
     }
   };
 
-  // Confirm delete contact
   const confirmDelete = (row: Contact) => {
     setSelectedRow(row);
     setDeleteModalVisible(true);
   };
 
-  // Remove contact
   const removeRow = () => {
     if (selectedRow) {
       setRows(rows.filter(row => row.id !== selectedRow.id));
@@ -64,38 +57,37 @@ const ContactsScreen: React.FC = () => {
     }
   };
 
-  // Save new contact
-const saveRow = () => {
-  if (name.trim() && contact.trim()) {
-    if (isEditing && selectedRow) {
-      // Update existing contact
-      setRows(rows.map(row => 
-        row.id === selectedRow.id ? { ...row, name, contact } : row
-      ));
-    } else {
-      // Add new contact
-      setRows([...rows, { id: Date.now().toString(), name, contact }]);
+  const saveRow = () => {
+    if (name.trim() && contact.trim()) {
+      if (isEditing && selectedRow) {
+        setRows(rows.map(row => 
+          row.id === selectedRow.id ? { ...row, name, contact, keepAfterWipe } : row
+        ));
+      } else {
+        setRows([...rows, { id: Date.now().toString(), name, contact, keepAfterWipe }]);
+      }
+      setName('');
+      setContact('');
+      setKeepAfterWipe(false);
+      setIsEditing(false);
+      setSelectedRow(null);
     }
-    setName('');
-    setContact('');
-    setIsEditing(false);
-    setSelectedRow(null);
-  }
-  setIsAdding(false);
-};
+    setIsAdding(false);
+  };
 
-const editRow = (row: Contact) => {
-  setSelectedRow(row);
-  setName(row.name);
-  setContact(row.contact);
-  setIsEditing(true);
-  setIsAdding(true);
-};
+  const editRow = (row: Contact) => {
+    setSelectedRow(row);
+    setName(row.name);
+    setContact(row.contact);
+    setKeepAfterWipe(row.keepAfterWipe);
+    setIsEditing(true);
+    setIsAdding(true);
+  };
 
-  // Cancel adding contact
   const cancelAdding = () => {
     setName('');
     setContact('');
+    setKeepAfterWipe(false);
     setIsAdding(false);
   };
 
@@ -107,28 +99,31 @@ const editRow = (row: Contact) => {
           <Text style={styles.noContactsSubText}>Click "Add Contact" to create a new one.</Text>
         </View>
       ) : (
-<FlatList
+        <FlatList
           data={rows}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
-renderItem={({ item }) => (
-  <TouchableOpacity onPress={() => editRow(item)} style={styles.row}>
-    <View>
-      <Text style={styles.rowText}>{item.name}</Text>
-      <Text style={styles.rowSubText}>{item.contact}</Text>
-    </View>
-    <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
-      <Icon name="trash" size={18} color="white" />
-    </TouchableOpacity>
-  </TouchableOpacity>
-)}        />
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => editRow(item)} style={styles.row}>
+              <View>
+                <Text style={styles.rowText}>{item.name}</Text>
+                <Text style={styles.rowSubText}>{item.contact}</Text>
+                {item.keepAfterWipe && (
+                  <Text style={styles.keepAfterWipeText}>Keep After Wipe</Text>
+                )}
+              </View>
+              <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
+                <Icon name="trash" size={18} color="white" />
+              </TouchableOpacity>
+            </TouchableOpacity>
+          )}
+        />
       )}
 
       <TouchableOpacity style={styles.button} onPress={() => setIsAdding(true)}>
         <Text style={styles.buttonText}>Add Contact</Text>
       </TouchableOpacity>
 
-      {/* Add Contact Modal */}
       <Modal visible={isAdding} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -146,6 +141,13 @@ renderItem={({ item }) => (
               onChangeText={setContact}
               keyboardType="phone-pad"
             />
+            <View style={styles.checkboxRow}>
+              <CheckBox
+                value={keepAfterWipe}
+                onValueChange={setKeepAfterWipe}
+              />
+              <Text style={styles.checkboxLabel}>Keep After Wipe</Text>
+            </View>
             <View style={styles.buttonRow}>
               <TouchableOpacity style={styles.saveButton} onPress={saveRow}>
                 <Text style={styles.saveButtonText}>Save</Text>
@@ -158,7 +160,6 @@ renderItem={({ item }) => (
         </View>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal visible={isDeleteModalVisible} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>

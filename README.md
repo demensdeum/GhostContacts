@@ -22,8 +22,8 @@ To run Ghost Contacts locally, follow these steps:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/demensdeum/ghost-contacts.git
-   cd ghost-contacts
+   git clone https://github.com/demensdeum/GhostContacts
+   cd GhostContacts
    ```
 
 2. Install dependencies:

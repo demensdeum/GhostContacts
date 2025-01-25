@@ -20,6 +20,23 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderRadius: 5,
   },
+  sectionSpacing: {
+    height: 20,
+},
+checkboxRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginVertical: 10,
+},
+checkboxLabel: {
+  marginLeft: 10,
+  fontSize: 16,
+},
+keepAfterWipeText: {
+  fontSize: 12,
+  color: 'green',
+  marginTop: 5,
+},
 confirmButton: {
   backgroundColor: 'green',
   padding: 10,
