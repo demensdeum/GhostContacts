@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, Platform, Modal } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Platform, Modal, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import * as FileSystem from 'expo-file-system';
@@ -8,6 +8,7 @@ import i18next from "../i18n";
 import styles from "../styles";
 import * as DocumentPicker from 'expo-document-picker';
 import { decode as atob } from 'base-64';
+import { useTheme } from "../ThemeContext";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -17,6 +18,7 @@ const LANGUAGES = [
 const STORAGE_KEY = "@contacts_list";
 
 const SettingsScreen: React.FC<{ setRefreshFlag: (value: boolean) => void }> = ({ setRefreshFlag }) => {
+  const { theme, isDark, toggleTheme } = useTheme();
   const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -159,6 +161,29 @@ const importContactsFromCSV = async () => {
     <View style={styles.container}>
       <Text style={styles.modalTitle}>{t("Settings")}</Text>
       
+      <Modal visible={showConfirmModal} transparent animationType="fade">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{t("Confirm Deletion")}</Text>
+            <Text style={styles.modalText}>
+              {t("Are you sure you want to remove all contacts? This action cannot be undone.")}
+            </Text>
+            <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.saveButton} onPress={() => setShowConfirmModal(false)}>
+              <Text style={styles.saveButtonText}>{t("Cancel")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.cancelButton]} 
+              onPress={removeAllContacts}
+            >
+              <Text style={styles.cancelButtonText}>{t("Delete All")}</Text>
+            </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+<ScrollView contentContainerStyle={styles.scrollContent}>
       {/* Language Selection Buttons */}
       {LANGUAGES.map((language) => (
         <TouchableOpacity
@@ -188,7 +213,6 @@ const importContactsFromCSV = async () => {
   <Text style={styles.rowText}>{t("Import Contacts CSV")}</Text>
 </TouchableOpacity>
 
-
       {/* Export Contacts Button */}
       <TouchableOpacity
         key="export-csv"
@@ -206,28 +230,15 @@ const importContactsFromCSV = async () => {
         <Text style={[styles.rowText]}>{t("Remove All Contacts")}</Text>
       </TouchableOpacity>
 
-      <Modal visible={showConfirmModal} transparent animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{t("Confirm Deletion")}</Text>
-            <Text style={styles.modalText}>
-              {t("Are you sure you want to remove all contacts? This action cannot be undone.")}
-            </Text>
-            <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.saveButton} onPress={() => setShowConfirmModal(false)}>
-              <Text style={styles.saveButtonText}>{t("Cancel")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.cancelButton]} 
-              onPress={removeAllContacts}
-            >
-              <Text style={styles.cancelButtonText}>{t("Delete All")}</Text>
-            </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-      
+      <TouchableOpacity
+        style={styles.row}
+        onPress={toggleTheme}
+      >
+        <Text style={styles.rowText}>
+          {isDark ? t("Light Theme") : t("Dark Theme")}
+        </Text>
+      </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };

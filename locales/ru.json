@@ -31,5 +31,7 @@
   "Remove All Contacts": "Удалить все контакты",
   "Confirm Deletion": "Подтверждение удаления",
   "Are you sure you want to remove all contacts? This action cannot be undone.": "Вы действительно хотите удалить все контакты? Это действие не может быть отменено.",
-  "Delete All": "Удалить все"
+  "Delete All": "Удалить все",
+  "Light Theme": "Светлая тема",
+  "Dark Theme": "Темная тема"
 }

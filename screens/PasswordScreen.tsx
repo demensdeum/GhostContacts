@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { useTranslation } from "react-i18next";
@@ -38,6 +38,7 @@ const PasswordScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.modalTitle}>{t("Passwords")}</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
       <Text style={styles.passwordTitle}>{t("Set or Change Password")}</Text>
       <TextInput
         style={styles.input}
@@ -69,6 +70,7 @@ const PasswordScreen: React.FC = () => {
       <TouchableOpacity style={styles.removeButton} onPress={removeTerminationPassword}>
         <Text style={styles.removeButtonText}>{t("Remove Termination Password")}</Text>
       </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
