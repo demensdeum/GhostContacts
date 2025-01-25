@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import ContactsScreen from '../screens/ContactsScreen';
@@ -11,6 +11,7 @@ const Tab = createBottomTabNavigator();
 
 const AppNavigator: React.FC = () => {
     const { t } = useTranslation();  
+    const [refreshFlag, setRefreshFlag] = useState(false);
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -33,9 +34,13 @@ const AppNavigator: React.FC = () => {
           tabBarInactiveTintColor: 'gray',
         })}
       >
-        <Tab.Screen name={t("Contacts")} component={ContactsScreen} />
+<Tab.Screen name={t("Contacts")}>
+    {() => <ContactsScreen refreshFlag={refreshFlag} />}
+</Tab.Screen>
         <Tab.Screen name={t("Passwords")} component={PasswordScreen} />
-        <Tab.Screen name={t("Settings")} component={SettingsScreen} />
+<Tab.Screen name={t("Settings")}>
+    {() => <SettingsScreen setRefreshFlag={setRefreshFlag} />}
+</Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );

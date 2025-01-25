@@ -6,6 +6,8 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import i18next from "../i18n";
 import styles from "../styles";
+import * as DocumentPicker from 'expo-document-picker';
+import { decode as atob } from 'base-64';
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -14,7 +16,7 @@ const LANGUAGES = [
 
 const STORAGE_KEY = "@contacts_list";
 
-const SettingsScreen: React.FC = () => {
+const SettingsScreen: React.FC<{ setRefreshFlag: (value: boolean) => void }> = ({ setRefreshFlag }) => {
   const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,6 +35,58 @@ const SettingsScreen: React.FC = () => {
     await AsyncStorage.setItem("language", languageCode);
     await i18next.changeLanguage(languageCode);
   };
+
+const importContactsFromCSV = async () => {
+  try {
+    const result = await DocumentPicker.getDocumentAsync({ type: "text/csv" });
+
+    if (result.canceled || !result.assets || result.assets.length === 0) {
+      console.log("Import canceled.");
+      return;
+    }
+
+    const file = result.assets[0];
+
+    if (!file.uri.startsWith("data:text/csv;base64,")) {
+      console.log("Invalid file format.");
+      return;
+    }
+
+    // Decode Base64 content
+    const base64String = file.uri.split(",")[1];
+    const fileContent = atob(base64String);
+
+    const rows = fileContent.split("\n").map(row => row.trim()).filter(row => row);
+    if (rows.length < 2) {
+      console.log("Invalid CSV format");
+      return;
+    }
+
+    const newContacts = rows.slice(1).map(row => {
+      const [name, contact, keepAfterWipe] = row.split(",");
+      return {
+        id: Date.now().toString(),
+        name: name.trim(),
+        contact: contact.trim(),
+        keepAfterWipe: keepAfterWipe.trim().toLowerCase() === "yes",
+      };
+    });
+
+    // Save contacts to AsyncStorage
+    const storedContacts = await AsyncStorage.getItem(STORAGE_KEY);
+    const contacts = storedContacts ? JSON.parse(storedContacts) : [];
+    const updatedContacts = [...contacts, ...newContacts];
+
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedContacts));
+
+    console.log(`Imported ${newContacts.length} contacts successfully.`);
+
+    setRefreshFlag(prev => !prev);
+
+  } catch (error) {
+    console.log("Import error:", error);
+  }
+}
 
   const exportContactsToCSV = async () => {
     try {
@@ -110,6 +164,15 @@ const SettingsScreen: React.FC = () => {
           </Text>
         </TouchableOpacity>
       ))}
+
+<TouchableOpacity
+  key="import-csv"
+  style={styles.row}
+  onPress={importContactsFromCSV}
+>
+  <Text style={styles.rowText}>{t("Import Contacts CSV")}</Text>
+</TouchableOpacity>
+
 
       {/* Export Contacts Button */}
       <TouchableOpacity

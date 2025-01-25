@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-nat
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 
+import { useTranslation } from "react-i18next";
+
 interface PasswordPromptProps {
   onAuthenticate: (auth: boolean) => void;
 }
@@ -11,6 +13,8 @@ const STORAGE_KEY = '@contacts_list';
 
 const PasswordPrompt: React.FC<PasswordPromptProps> = ({ onAuthenticate }) => {
   const [inputPassword, setInputPassword] = useState<string>('');
+
+  const { t } = useTranslation();
 
   const checkPassword = async () => {
     const terminationPassword = await AsyncStorage.getItem('termination_password');
@@ -40,16 +44,16 @@ const PasswordPrompt: React.FC<PasswordPromptProps> = ({ onAuthenticate }) => {
     <Modal visible={true} transparent animationType="fade">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Enter App Password</Text>
+          <Text style={styles.modalTitle}>{t("Enter App Password")}</Text>
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder={t("Password")}
             secureTextEntry
             value={inputPassword}
             onChangeText={setInputPassword}
           />
           <TouchableOpacity style={styles.saveButton} onPress={checkPassword}>
-            <Text style={styles.saveButtonText}>Login</Text>
+            <Text style={styles.saveButtonText}>{t("Login")}</Text>
           </TouchableOpacity>
         </View>
       </View>

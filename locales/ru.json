@@ -25,5 +25,7 @@
   "Delete Contact": "Удалить контакт",
   "Are you sure you want to delete": "Удаляем",
   "Delete": "Удалить",
-  "Edit Contact": "Редактирование"
+  "Edit Contact": "Редактирование",
+  "Password": "Пароль",
+  "Import Contacts CSV": "Импортировать контакты CSV"
 }

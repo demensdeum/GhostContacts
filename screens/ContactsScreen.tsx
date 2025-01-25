@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 const STORAGE_KEY = '@contacts_list';
 
-const ContactsScreen: React.FC = () => {
+const ContactsScreen: React.FC<{ refreshFlag: boolean }> = ({ refreshFlag }) => {
     const { t } = useTranslation();
   const [rows, setRows] = useState<Contact[]>([]);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -18,6 +18,10 @@ const ContactsScreen: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<Contact | null>(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
+useEffect(() => {
+  loadContacts();
+}, [refreshFlag]);
 
   useEffect(() => {
     loadContacts();
