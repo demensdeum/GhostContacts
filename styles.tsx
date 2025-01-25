@@ -28,6 +28,12 @@ checkboxRow: {
   alignItems: 'center',
   marginVertical: 10,
 },
+divider: {
+  height: 1,
+  backgroundColor: "#ccc",
+  marginVertical: 20,
+  width: "100%",
+},
 checkboxLabel: {
   marginLeft: 10,
   fontSize: 16,

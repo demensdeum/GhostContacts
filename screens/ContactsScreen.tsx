@@ -4,10 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { Contact } from '../types';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTranslation } from "react-i18next";
 
 const STORAGE_KEY = '@contacts_list';
 
 const ContactsScreen: React.FC = () => {
+    const { t } = useTranslation();
   const [rows, setRows] = useState<Contact[]>([]);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
@@ -93,23 +95,23 @@ const ContactsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+    <Text style={styles.modalTitle}>{t("Contacts")}</Text>
       {rows.length === 0 ? (
         <View style={styles.noContactsContainer}>
-          <Text style={styles.noContactsText}>No contacts available.</Text>
-          <Text style={styles.noContactsSubText}>Click "Add Contact" to create a new one.</Text>
+          <Text style={styles.noContactsText}>{t("No contacts available.")}</Text>
+          <Text style={styles.noContactsSubText}>{t("Click \"Add Contact\" to create a new one.")}</Text>
         </View>
       ) : (
         <FlatList
           data={rows}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.list}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => editRow(item)} style={styles.row}>
               <View>
                 <Text style={styles.rowText}>{item.name}</Text>
                 <Text style={styles.rowSubText}>{item.contact}</Text>
                 {item.keepAfterWipe && (
-                  <Text style={styles.keepAfterWipeText}>Keep After Wipe</Text>
+                  <Text style={styles.keepAfterWipeText}>{t("Keep After Wipe")}</Text>
                 )}
               </View>
               <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
@@ -121,39 +123,38 @@ const ContactsScreen: React.FC = () => {
       )}
 
       <TouchableOpacity style={styles.button} onPress={() => setIsAdding(true)}>
-        <Text style={styles.buttonText}>Add Contact</Text>
+        <Text style={styles.buttonText}>{t("Add Contact")}</Text>
       </TouchableOpacity>
 
       <Modal visible={isAdding} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{isEditing ? 'Edit Contact' : 'Add New Contact'}</Text>
+            <Text style={styles.modalTitle}>{isEditing ? t('Edit Contact') : t('Add New Contact')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter Name"
+              placeholder={t("Enter Name")}
               value={name}
               onChangeText={setName}
             />
             <TextInput
               style={styles.input}
-              placeholder="Enter Contact"
+              placeholder={t("Enter Contact")}
               value={contact}
               onChangeText={setContact}
-              keyboardType="phone-pad"
             />
             <View style={styles.checkboxRow}>
               <CheckBox
                 value={keepAfterWipe}
                 onValueChange={setKeepAfterWipe}
               />
-              <Text style={styles.checkboxLabel}>Keep After Wipe</Text>
+              <Text style={styles.checkboxLabel}>{t("Keep After Wipe")}</Text>
             </View>
             <View style={styles.buttonRow}>
               <TouchableOpacity style={styles.saveButton} onPress={saveRow}>
-                <Text style={styles.saveButtonText}>Save</Text>
+                <Text style={styles.saveButtonText}>{t("Save")}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cancelButton} onPress={cancelAdding}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>{t("Cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -163,14 +164,14 @@ const ContactsScreen: React.FC = () => {
       <Modal visible={isDeleteModalVisible} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Delete Contact</Text>
-            <Text style={styles.modalText}>Are you sure you want to delete {selectedRow?.name}?</Text>
+            <Text style={styles.modalTitle}>{t("Delete Contact")}</Text>
+            <Text style={styles.modalText}>{t("Are you sure you want to delete")} {selectedRow?.name} ?</Text>
             <View style={styles.buttonRow}>
               <TouchableOpacity style={styles.saveButton} onPress={removeRow}>
-                <Text style={styles.saveButtonText}>Delete</Text>
+                <Text style={styles.saveButtonText}>{t("Delete")}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cancelButton} onPress={() => setDeleteModalVisible(false)}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>{t("Cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>

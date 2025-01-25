@@ -3,12 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import ContactsScreen from '../screens/ContactsScreen';
 import PasswordScreen from '../screens/PasswordScreen';
-import LanguageSelectionScreen from '../screens/LanguageSelectionScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator: React.FC = () => {
+    const { t } = useTranslation();  
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -17,11 +19,11 @@ const AppNavigator: React.FC = () => {
           tabBarIcon: ({ color, size }) => {
             let iconName: string = 'ellipse'; // Default icon
 
-            if (route.name === 'Contacts') {
+            if (route.name === t('Contacts')) {
               iconName = 'person-outline';
-            } else if (route.name === 'Password') {
+            } else if (route.name === t('Passwords')) {
               iconName = 'lock-closed-outline';
-            } else if (route.name === 'Settings') {
+            } else if (route.name === t('Settings')) {
               iconName = 'settings-outline';
             }
 
@@ -31,9 +33,9 @@ const AppNavigator: React.FC = () => {
           tabBarInactiveTintColor: 'gray',
         })}
       >
-        <Tab.Screen name="Contacts" component={ContactsScreen} />
-        <Tab.Screen name="Password" component={PasswordScreen} />
-        <Tab.Screen name="Settings" component={LanguageSelectionScreen} />
+        <Tab.Screen name={t("Contacts")} component={ContactsScreen} />
+        <Tab.Screen name={t("Passwords")} component={PasswordScreen} />
+        <Tab.Screen name={t("Settings")} component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

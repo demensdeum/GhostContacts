@@ -12,23 +12,10 @@ const PasswordScreen: React.FC = () => {
 
   const [newPassword, setNewPassword] = useState<string>('');
   const [newTerminationPassword, setNewTerminationPassword] = useState<string>('');
-  const [hasPassword, setHasPassword] = useState<boolean>(false);
-  const [hasTerminationPassword, setHasTerminationPassword] = useState<boolean>(false);
-
-  useEffect(() => {
-    const checkPassword = async () => {
-      const storedPassword = await AsyncStorage.getItem(PASSWORD_KEY);
-      setHasPassword(!!storedPassword);
-      const storedTerminationPassword = await AsyncStorage.getItem(TERMINATION_PASSWORD_KEY);
-      setHasTerminationPassword(!!storedTerminationPassword);
-    };
-    checkPassword();
-  }, []);
 
   const savePassword = async () => {
     if (newPassword.trim()) {
       await AsyncStorage.setItem(PASSWORD_KEY, newPassword);
-      setHasPassword(true);
       setNewPassword('');
     }
   };
@@ -36,23 +23,21 @@ const PasswordScreen: React.FC = () => {
   const saveTerminationPassword = async () => {
     if (newTerminationPassword.trim()) {
       await AsyncStorage.setItem(TERMINATION_PASSWORD_KEY, newTerminationPassword);
-      setHasTerminationPassword(true);
       setNewTerminationPassword('');
     }
   };
 
   const removePassword = async () => {
     await AsyncStorage.removeItem(PASSWORD_KEY);
-    setHasPassword(false);
   };
 
   const removeTerminationPassword = async () => {
     await AsyncStorage.removeItem(TERMINATION_PASSWORD_KEY);
-    setHasTerminationPassword(false);
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.modalTitle}>{t("Passwords")}</Text>
       <Text style={styles.passwordTitle}>{t("Set or Change Password")}</Text>
       <TextInput
         style={styles.input}
@@ -64,11 +49,9 @@ const PasswordScreen: React.FC = () => {
       <TouchableOpacity style={styles.saveButton} onPress={savePassword}>
         <Text style={styles.saveButtonText}>{t("Save Password")}</Text>
       </TouchableOpacity>
-      {hasPassword && (
-        <TouchableOpacity style={styles.removeButton} onPress={removePassword}>
-          <Text style={styles.removeButtonText}>{t("Remove Password")}</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity style={styles.removeButton} onPress={removePassword}>
+        <Text style={styles.removeButtonText}>{t("Remove Password")}</Text>
+      </TouchableOpacity>
 
       <View style={styles.sectionSpacing} />
 
@@ -83,11 +66,9 @@ const PasswordScreen: React.FC = () => {
       <TouchableOpacity style={styles.saveButton} onPress={saveTerminationPassword}>
         <Text style={styles.saveButtonText}>{t("Save Termination Password")}</Text>
       </TouchableOpacity>
-      {hasTerminationPassword && (
-        <TouchableOpacity style={styles.removeButton} onPress={removeTerminationPassword}>
-          <Text style={styles.removeButtonText}>{t("Remove Termination Password")}</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity style={styles.removeButton} onPress={removeTerminationPassword}>
+        <Text style={styles.removeButtonText}>{t("Remove Termination Password")}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

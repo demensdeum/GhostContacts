@@ -1,13 +1,13 @@
 {
   "Enter App Password": "Enter App Password",
   "Login": "Enter",
-  "change_language": "Change Language",
   "Enter New Password": "Enter New Password",
   "Save Password": "Save Password",
   "Remove Password": "Remove Password",
-  "Set or Change Password": "Set or Change Password",
-  "Enter New Wipe Password": "Enter New Wipe Password",
-  "Save Termination Password": "Save Wipe Password",
-  "Remove Termination Password": "Remove Termination Password",
-  "Set or Change Termination Password": "Set or Change Wipe Password"
+  "Set or Change Password" : "Set or Change Password",
+  "Enter New Wipe Password" : "Enter New Wipe Password",
+  "Save Termination Password" : "Save Wipe Password",
+  "Remove Termination Password" : "Remove Wipe Password",
+  "Set or Change Termination Password" : "Set or Change Wipe Password",
+  "Passwords": "Passwords"
 }
