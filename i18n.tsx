@@ -14,13 +14,12 @@ const resources = {
   },
 };
 
-// const getDeviceLanguage = () => {
-//   const locales = RNLocalize.getLocales();
-//   return locales.length > 0 ? locales[0].languageCode : "en";
-// };
-
 const getDeviceLanguage = () => {
-  return "en"
+  const language = navigator.language || navigator.languages[0];
+  if (language.startsWith('ru')) {
+    return 'ru';
+  }
+  return 'en';
 };
 
 const loadLanguage = async () => {
