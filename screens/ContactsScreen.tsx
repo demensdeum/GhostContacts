@@ -5,11 +5,13 @@ import styles from '../styles';
 import { Contact } from '../types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from "react-i18next";
+import { useTheme } from '../ThemeContext';
 
 const STORAGE_KEY = '@contacts_list';
 
 const ContactsScreen: React.FC<{ refreshFlag: boolean }> = ({ refreshFlag }) => {
     const { t } = useTranslation();
+    const { theme } = useTheme();
   const [rows, setRows] = useState<Contact[]>([]);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
@@ -98,8 +100,8 @@ useEffect(() => {
   };
 
   return (
-    <View style={styles.container}>
-    <Text style={styles.modalTitle}>{t("Contacts")}</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <Text style={[styles.modalTitle, { color: theme.text }]}>{t("Contacts")}</Text>
       {rows.length === 0 ? (
         <View style={styles.noContactsContainer}>
           <Text style={styles.noContactsText}>{t("No contacts available.")}</Text>
@@ -110,38 +112,38 @@ useEffect(() => {
           data={rows}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => editRow(item)} style={styles.row}>
+            <TouchableOpacity onPress={() => editRow(item)} style={[styles.row, { backgroundColor: theme.background }]}>
               <View>
-                <Text style={styles.rowText}>{item.name}</Text>
-                <Text style={styles.rowSubText}>{item.contact}</Text>
+                <Text style={[styles.rowText, { color: theme.text }]}>{item.name}</Text>
+                <Text style={[styles.rowSubText, { color: theme.text }]}>{item.contact}</Text>
                 {item.keepAfterWipe && (
-                  <Text style={styles.keepAfterWipeText}>{t("Keep After Wipe")}</Text>
+                  <Text style={[styles.keepAfterWipeText, { color: theme.text }]}>{t("Keep After Wipe")}</Text>
                 )}
               </View>
-              <TouchableOpacity onPress={() => confirmDelete(item)} style={styles.removeButton}>
-                <Icon name="trash" size={18} color="white" />
+              <TouchableOpacity onPress={() => confirmDelete(item)} style={[styles.removeButton, { backgroundColor: theme.buttonBackground }]}>
+                <Icon name="trash" size={18} color={theme.text} />
               </TouchableOpacity>
             </TouchableOpacity>
           )}
         />
       )}
 
-      <TouchableOpacity style={styles.button} onPress={() => setIsAdding(true)}>
-        <Text style={styles.buttonText}>{t("Add Contact")}</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground }]} onPress={() => setIsAdding(true)}>
+        <Text style={[styles.buttonText, { color: theme.text }]}>{t("Add Contact")}</Text>
       </TouchableOpacity>
 
       <Modal visible={isAdding} transparent animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{isEditing ? t('Edit Contact') : t('Add New Contact')}</Text>
+        <View style={[styles.modalContainer]}>
+          <View style={[styles.modalContent, { backgroundColor: theme.background }]}>
+            <Text style={[styles.modalTitle, { color: theme.text }]}>{isEditing ? t('Edit Contact') : t('Add New Contact')}</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.background, color: theme.text }]}
               placeholder={t("Enter Name")}
               value={name}
               onChangeText={setName}
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.background, color: theme.text }]}
               placeholder={t("Enter Contact")}
               value={contact}
               onChangeText={setContact}
@@ -151,14 +153,14 @@ useEffect(() => {
                 value={keepAfterWipe}
                 onValueChange={setKeepAfterWipe}
               />
-              <Text style={styles.checkboxLabel}>{t("Keep After Wipe")}</Text>
+              <Text style={[styles.checkboxLabel, { color: theme.text }]}>{t("Keep After Wipe")}</Text>
             </View>
             <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.saveButton} onPress={saveRow}>
-                <Text style={styles.saveButtonText}>{t("Save")}</Text>
+              <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={saveRow}>
+                <Text style={[styles.saveButtonText, { color: theme.text }]}>{t("Save")}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={cancelAdding}>
-                <Text style={styles.cancelButtonText}>{t("Cancel")}</Text>
+              <TouchableOpacity style={[styles.cancelButton, { backgroundColor: theme.buttonBackground }]} onPress={cancelAdding}>
+                <Text style={[styles.cancelButtonText, { color: theme.text }]}>{t("Cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -168,14 +170,14 @@ useEffect(() => {
       <Modal visible={isDeleteModalVisible} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{t("Delete Contact")}</Text>
-            <Text style={styles.modalText}>{t("Are you sure you want to delete")} {selectedRow?.name} ?</Text>
+            <Text style={[styles.modalTitle, { color: theme.text }]}>{t("Delete Contact")}</Text>
+            <Text style={[styles.modalText, { color: theme.text }]}>{t("Are you sure you want to delete")} {selectedRow?.name} ?</Text>
             <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.saveButton} onPress={removeRow}>
-                <Text style={styles.saveButtonText}>{t("Delete")}</Text>
+              <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={removeRow}>
+                <Text style={[styles.saveButtonText, { color: theme.text }]}>{t("Delete")}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={() => setDeleteModalVisible(false)}>
-                <Text style={styles.cancelButtonText}>{t("Cancel")}</Text>
+              <TouchableOpacity style={[styles.cancelButton, { backgroundColor: theme.buttonBackground }]} onPress={() => setDeleteModalVisible(false)}>
+                <Text style={[styles.cancelButtonText, { color: theme.text }]}>{t("Cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>
