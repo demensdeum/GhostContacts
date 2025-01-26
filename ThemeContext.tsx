@@ -17,6 +17,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     loadThemePreference();
   }, []);
 
+  useEffect(() => {
+    // Set initial body background color
+    if (typeof document !== 'undefined') {
+      document.body.style.backgroundColor = isDark ? darkTheme.background : lightTheme.background;
+    }
+  }, [isDark]);
+
   const loadThemePreference = async () => {
     try {
       const savedTheme = await AsyncStorage.getItem('theme');
@@ -31,6 +38,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const newTheme = !isDark;
       setIsDark(newTheme);
       await AsyncStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      // Hack to change body background color
+      if (typeof document !== 'undefined') {
+        document.body.style.backgroundColor = newTheme ? darkTheme.background : lightTheme.background;
+      }
     } catch (error) {
       console.log('Error saving theme:', error);
     }
