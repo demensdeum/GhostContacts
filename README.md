@@ -2,7 +2,7 @@
 
 Ghost Contacts is a React Native application that allows you to manage a secret contact list. The app ensures privacy by keeping your contacts hidden from the default contact list.
 
-**⚠️ Disclaimer:** This app is just a toy! If someone has access to your device, this app will not protect your contacts from being discovered. Use it at your own discretion.
+**⚠️ Disclaimer:** If someone has access to your device, this app will not protect your contacts from being discovered. Use it at your own discretion. However, this app can, potentually, hide your contacts from other apps.
 
 ## 📱 Preview
 

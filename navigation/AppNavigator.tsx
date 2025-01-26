@@ -6,10 +6,12 @@ import PasswordScreen from '../screens/PasswordScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from "react-i18next";
+import { useTheme } from '../ThemeContext'
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator: React.FC = () => {
+    const { theme } = useTheme();
     const { t } = useTranslation();  
     const [refreshFlag, setRefreshFlag] = useState(false);
   return (
@@ -30,8 +32,11 @@ const AppNavigator: React.FC = () => {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#007AFF',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: theme.buttonBackground,
+          tabBarInactiveTintColor: theme.text,
+          tabBarStyle: {
+            backgroundColor: theme.background,
+          },
         })}
       >
 <Tab.Screen name={t("Contacts")}>

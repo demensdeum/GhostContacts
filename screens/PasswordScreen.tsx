@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../ThemeContext';
 import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
@@ -9,6 +10,7 @@ const TERMINATION_PASSWORD_KEY = 'termination_password';
 
 const PasswordScreen: React.FC = () => {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   const [newPassword, setNewPassword] = useState<string>('');
   const [newTerminationPassword, setNewTerminationPassword] = useState<string>('');
@@ -36,43 +38,44 @@ const PasswordScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.modalTitle}>{t("Passwords")}</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.modalTitle, { color: theme.text }]}>{t("Passwords")}</Text>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-      <Text style={styles.passwordTitle}>{t("Set or Change Password")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("Enter New Password")}
-        secureTextEntry
-        value={newPassword}
-        onChangeText={setNewPassword}
-      />
-      <TouchableOpacity style={styles.saveButton} onPress={savePassword}>
-        <Text style={styles.saveButtonText}>{t("Save Password")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.removeButton} onPress={removePassword}>
-        <Text style={styles.removeButtonText}>{t("Remove Password")}</Text>
-      </TouchableOpacity>
+        <Text style={[styles.passwordTitle, { color: theme.text }]}>{t("Set or Change Password")}</Text>
+        <TextInput
+          style={[styles.input, { backgroundColor: theme.inputBackground, color: theme.text, borderColor: theme.border }]}
+          placeholder={t("Enter New Password")}
+          placeholderTextColor={theme.text}
+          secureTextEntry
+          value={newPassword}
+          onChangeText={setNewPassword}
+        />
+        <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={savePassword}>
+          <Text style={[styles.saveButtonText, { color: theme.buttonText }]}>{t("Save Password")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.removeButton, { backgroundColor: theme.danger }]} onPress={removePassword}>
+          <Text style={[styles.removeButtonText, { color: theme.buttonText }]}>{t("Remove Password")}</Text>
+        </TouchableOpacity>
 
-      <View style={styles.sectionSpacing} />
+        <View style={styles.sectionSpacing} />
 
-      <Text style={styles.passwordTitle}>{t("Set or Change Termination Password")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("Enter New Wipe Password")}
-        secureTextEntry
-        value={newTerminationPassword}
-        onChangeText={setNewTerminationPassword}
-      />
-      <TouchableOpacity style={styles.saveButton} onPress={saveTerminationPassword}>
-        <Text style={styles.saveButtonText}>{t("Save Termination Password")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.removeButton} onPress={removeTerminationPassword}>
-        <Text style={styles.removeButtonText}>{t("Remove Termination Password")}</Text>
-      </TouchableOpacity>
+        <Text style={[styles.passwordTitle, { color: theme.text }]}>{t("Set or Change Termination Password")}</Text>
+        <TextInput
+          style={[styles.input, { backgroundColor: theme.inputBackground, color: theme.text, borderColor: theme.border }]}
+          placeholder={t("Enter New Wipe Password")}
+          placeholderTextColor={theme.text}
+          secureTextEntry
+          value={newTerminationPassword}
+          onChangeText={setNewTerminationPassword}
+        />
+        <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={saveTerminationPassword}>
+          <Text style={[styles.saveButtonText, { color: theme.buttonText }]}>{t("Save Termination Password")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.removeButton, { backgroundColor: theme.danger }]} onPress={removeTerminationPassword}>
+          <Text style={[styles.removeButtonText, { color: theme.buttonText }]}>{t("Remove Termination Password")}</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
-  );
-};
+  );};
 
 export default PasswordScreen;
