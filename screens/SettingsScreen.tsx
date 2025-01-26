@@ -158,22 +158,22 @@ const importContactsFromCSV = async () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.modalTitle}>{t("Settings")}</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.modalTitle, { color: theme.text }]}>{t("Settings")}</Text>
       
       <Modal visible={showConfirmModal} transparent animationType="fade">
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{t("Confirm Deletion")}</Text>
-            <Text style={styles.modalText}>
+          <View style={[styles.modalContent, { backgroundColor: theme.background }]}>
+            <Text style={[styles.modalTitle, { color: theme.text }]}>{t("Confirm Deletion")}</Text>
+            <Text style={[styles.modalText, { color: theme.text }]}>
               {t("Are you sure you want to remove all contacts? This action cannot be undone.")}
             </Text>
             <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.saveButton} onPress={() => setShowConfirmModal(false)}>
-              <Text style={styles.saveButtonText}>{t("Cancel")}</Text>
+            <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={() => setShowConfirmModal(false)}>
+              <Text style={[styles.saveButtonText, { color: theme.text }]}>{t("Cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-              style={[styles.cancelButton]} 
+              style={[styles.cancelButton, { backgroundColor: theme.buttonBackground }]} 
               onPress={removeAllContacts}
             >
               <Text style={styles.cancelButtonText}>{t("Delete All")}</Text>
@@ -189,15 +189,13 @@ const importContactsFromCSV = async () => {
         <TouchableOpacity
           key={language.code}
           style={[
-            styles.row,
-            selectedLanguage === language.code && styles.selectedRow,
+            styles.row, { backgroundColor: theme.rowBackground },
           ]}
           onPress={() => changeLanguage(language.code)}
         >
           <Text
             style={[
-              styles.rowText,
-              selectedLanguage === language.code && styles.selectedRowText,
+              styles.rowText, { color: theme.text },
             ]}
           >
             {language.label}
@@ -207,34 +205,34 @@ const importContactsFromCSV = async () => {
 
 <TouchableOpacity
   key="import-csv"
-  style={styles.row}
+  style={[styles.row, { backgroundColor: theme.rowBackground }]}
   onPress={importContactsFromCSV}
 >
-  <Text style={styles.rowText}>{t("Import Contacts CSV")}</Text>
+  <Text style={[styles.rowText, { color: theme.text }]}>{t("Import Contacts CSV")}</Text>
 </TouchableOpacity>
 
       {/* Export Contacts Button */}
       <TouchableOpacity
         key="export-csv"
-        style={styles.row}
+        style={[styles.row, { backgroundColor: theme.rowBackground }]}
         onPress={exportContactsToCSV}
       >
-        <Text style={styles.rowText}>{t("Export Contacts CSV")}</Text>
+        <Text style={[styles.rowText, { color: theme.text }]}>{t("Export Contacts CSV")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         key="remove-all"
-        style={[styles.row]}
+        style={[styles.row, { backgroundColor: theme.rowBackground }]}
         onPress={() => setShowConfirmModal(true)}
       >
-        <Text style={[styles.rowText]}>{t("Remove All Contacts")}</Text>
+        <Text style={[styles.rowText, { color: theme.text }]}>{t("Remove All Contacts")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.row}
+        style={[styles.row, { backgroundColor: theme.rowBackground }]}
         onPress={toggleTheme}
       >
-        <Text style={styles.rowText}>
+        <Text style={[styles.rowText, { color: theme.text }]}>
           {isDark ? t("Light Theme") : t("Dark Theme")}
         </Text>
       </TouchableOpacity>

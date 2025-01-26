@@ -121,7 +121,7 @@ useEffect(() => {
                 )}
               </View>
               <TouchableOpacity onPress={() => confirmDelete(item)} style={[styles.removeButton, { backgroundColor: theme.buttonBackground }]}>
-                <Icon name="trash" size={18} color={theme.text} />
+                <Icon name="trash" size={18} color={theme.buttonText} />
               </TouchableOpacity>
             </TouchableOpacity>
           )}
@@ -129,7 +129,7 @@ useEffect(() => {
       )}
 
       <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground }]} onPress={() => setIsAdding(true)}>
-        <Text style={[styles.buttonText, { color: theme.text }]}>{t("Add Contact")}</Text>
+        <Text style={[styles.buttonText, { color: theme.buttonText }]}>{t("Add Contact")}</Text>
       </TouchableOpacity>
 
       <Modal visible={isAdding} transparent animationType="fade">
