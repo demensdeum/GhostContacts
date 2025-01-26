@@ -36,6 +36,7 @@ const AppNavigator: React.FC = () => {
           tabBarInactiveTintColor: theme.text,
           tabBarStyle: {
             backgroundColor: theme.background,
+            borderTopWidth: 0,
           },
         })}
       >

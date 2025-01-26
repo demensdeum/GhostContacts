@@ -66,7 +66,7 @@ useEffect(() => {
   };
 
   const saveRow = () => {
-    if (name.trim() && contact.trim()) {
+    if (name.trim()) {
       if (isEditing && selectedRow) {
         setRows(rows.map(row => 
           row.id === selectedRow.id ? { ...row, name, contact, keepAfterWipe } : row
@@ -74,13 +74,13 @@ useEffect(() => {
       } else {
         setRows([...rows, { id: Date.now().toString(), name, contact, keepAfterWipe }]);
       }
+      setIsAdding(false);      
       setName('');
       setContact('');
       setKeepAfterWipe(false);
       setIsEditing(false);
       setSelectedRow(null);
     }
-    setIsAdding(false);
   };
 
   const editRow = (row: Contact) => {
@@ -157,10 +157,10 @@ useEffect(() => {
             </View>
             <View style={styles.buttonRow}>
               <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={saveRow}>
-                <Text style={[styles.saveButtonText, { color: theme.text }]}>{t("Save")}</Text>
+                <Text style={[styles.saveButtonText, { color: theme.buttonText }]}>{t("Save")}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.cancelButton, { backgroundColor: theme.buttonBackground }]} onPress={cancelAdding}>
-                <Text style={[styles.cancelButtonText, { color: theme.text }]}>{t("Cancel")}</Text>
+                <Text style={[styles.cancelButtonText, { color: theme.buttonText }]}>{t("Cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -168,16 +168,16 @@ useEffect(() => {
       </Modal>
 
       <Modal visible={isDeleteModalVisible} transparent animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+        <View style={[styles.modalContainer]}>
+          <View style={[styles.modalContent, { backgroundColor: theme.background }]}>
             <Text style={[styles.modalTitle, { color: theme.text }]}>{t("Delete Contact")}</Text>
             <Text style={[styles.modalText, { color: theme.text }]}>{t("Are you sure you want to delete")} {selectedRow?.name} ?</Text>
             <View style={styles.buttonRow}>
               <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={removeRow}>
-                <Text style={[styles.saveButtonText, { color: theme.text }]}>{t("Delete")}</Text>
+                <Text style={[styles.saveButtonText, { color: theme.buttonText }]}>{t("Delete")}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.cancelButton, { backgroundColor: theme.buttonBackground }]} onPress={() => setDeleteModalVisible(false)}>
-                <Text style={[styles.cancelButtonText, { color: theme.text }]}>{t("Cancel")}</Text>
+                <Text style={[styles.cancelButtonText, { color: theme.buttonText }]}>{t("Cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>

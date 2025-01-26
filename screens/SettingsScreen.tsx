@@ -50,6 +50,8 @@ const SettingsScreen: React.FC<{ setRefreshFlag: (value: boolean) => void }> = (
       console.log("All contacts removed successfully");
     } catch (error) {
       console.log("Remove all contacts error:", error);
+    } finally {
+      setShowConfirmModal(false);
     }
   };
 
@@ -170,13 +172,13 @@ const importContactsFromCSV = async () => {
             </Text>
             <View style={styles.buttonRow}>
             <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.buttonBackground }]} onPress={() => setShowConfirmModal(false)}>
-              <Text style={[styles.saveButtonText, { color: theme.text }]}>{t("Cancel")}</Text>
+              <Text style={[styles.saveButtonText, { color: theme.buttonText }]}>{t("Cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={[styles.cancelButton, { backgroundColor: theme.buttonBackground }]} 
               onPress={removeAllContacts}
             >
-              <Text style={styles.cancelButtonText}>{t("Delete All")}</Text>
+              <Text style={[styles.cancelButtonText, { color: theme.buttonText }]}>{t("Delete All")}</Text>
             </TouchableOpacity>
             </View>
           </View>
