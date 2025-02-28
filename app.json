@@ -24,7 +24,8 @@
       }
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.snackb2680d13022e425ca60311c2cc79567a"
     },
     "android": {
       "adaptiveIcon": {
