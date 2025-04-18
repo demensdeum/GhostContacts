@@ -14,6 +14,7 @@
     "@react-navigation/native": "7.0.14",
     "@react-navigation/stack": "*",
     "base-64": "*",
+    "bcryptjs": "^3.0.2",
     "expo": "~52.0.27",
     "expo-document-picker": "~13.0.2",
     "expo-file-system": "~18.0.7",

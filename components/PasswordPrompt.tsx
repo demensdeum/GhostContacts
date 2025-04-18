@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-nat
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { useTranslation } from 'react-i18next';
-import bcrypt from 'react-native-bcrypt';
+import bcrypt from "bcryptjs";
 
 interface PasswordPromptProps {
   onAuthenticate: (success: boolean) => void;
