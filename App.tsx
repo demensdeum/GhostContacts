@@ -1,11 +1,12 @@
-import { ThemeProvider } from './ThemeContext'
-import React, { useState, useEffect } from "react"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import PasswordPrompt from "./components/PasswordPrompt"
-import AppNavigator from "./navigation/AppNavigator"
-import { ActivityIndicator, View } from "react-native"
-import "./i18n"
-import { useTranslation } from "react-i18next"
+import { ThemeProvider } from './ThemeContext';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PasswordPrompt from './components/PasswordPrompt';
+import AppNavigator from './navigation/AppNavigator';
+import { ActivityIndicator, View } from 'react-native';
+import './i18n';
+import { useTranslation } from 'react-i18next';
+import bcrypt from 'react-native-bcrypt';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -15,13 +16,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkStoredPassword = async () => {
-      const password = await AsyncStorage.getItem("app_password");
-      setIsPasswordSet(!!password);
+      const hash = await AsyncStorage.getItem('app_password');
+      setIsPasswordSet(hash !== null && hash.trim().length > 0);
     };
 
     const loadLanguage = async () => {
-      const savedLanguage = await AsyncStorage.getItem("language");
-      console.log(savedLanguage)
+      const savedLanguage = await AsyncStorage.getItem('language');
       if (savedLanguage) {
         await i18n.changeLanguage(savedLanguage);
       }
@@ -32,22 +32,36 @@ const App: React.FC = () => {
     loadLanguage();
   }, []);
 
-  // Show loading indicator while checking AsyncStorage
+  // Показать загрузку, пока инициализируем язык и проверяем пароль
   if (isPasswordSet === null || !isLanguageLoaded) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" />
       </View>
     );
   }
 
+  // Если пароль установлен, но пользователь ещё не аутентифицирован — показать промпт
   if (isPasswordSet && !authenticated) {
-    return <PasswordPrompt onAuthenticate={setAuthenticated} />;
+    return (
+      <PasswordPrompt
+      onAuthenticate={(success) => {
+        if (success) {
+          setAuthenticated(true);
+        } else {
+          console.warn('Incorrect password');
+        }
+      }}
+      />
+    );
   }
 
-  return <ThemeProvider>
-          <AppNavigator />
-        </ThemeProvider>;
+  // Всё готово — запускаем приложение
+  return (
+    <ThemeProvider>
+    <AppNavigator />
+    </ThemeProvider>
+  );
 };
 
 export default App;

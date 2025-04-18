@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, Alert } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { CheckBox } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { Contact } from '../types';

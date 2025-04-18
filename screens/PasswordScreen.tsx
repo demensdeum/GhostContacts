@@ -4,6 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView } from 'r
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { useTranslation } from "react-i18next";
+import bcrypt from 'react-native-bcrypt';
 
 const PASSWORD_KEY = 'app_password';
 const TERMINATION_PASSWORD_KEY = 'termination_password';
@@ -17,14 +18,19 @@ const PasswordScreen: React.FC = () => {
 
   const savePassword = async () => {
     if (newPassword.trim()) {
-      await AsyncStorage.setItem(PASSWORD_KEY, newPassword);
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(newPassword, salt);
+      await AsyncStorage.setItem(PASSWORD_KEY, hash);
       setNewPassword('');
     }
   };
 
   const saveTerminationPassword = async () => {
     if (newTerminationPassword.trim()) {
-      await AsyncStorage.setItem(TERMINATION_PASSWORD_KEY, newTerminationPassword);
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(newTerminationPassword, salt);
+      console.log(hash)
+      await AsyncStorage.setItem(TERMINATION_PASSWORD_KEY, hash);
       setNewTerminationPassword('');
     }
   };
