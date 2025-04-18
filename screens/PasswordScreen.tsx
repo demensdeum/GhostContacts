@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView } from 'r
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles';
 import { useTranslation } from "react-i18next";
-import bcrypt from "bcryptjs";
+import bcrypt from '../bcryptWrapper';
 
 const PASSWORD_KEY = 'app_password';
 const TERMINATION_PASSWORD_KEY = 'termination_password';

@@ -6,7 +6,7 @@ import AppNavigator from './navigation/AppNavigator';
 import { ActivityIndicator, View } from 'react-native';
 import './i18n';
 import { useTranslation } from 'react-i18next';
-import bcrypt from "bcryptjs";
+import bcrypt from './bcryptWrapper';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
